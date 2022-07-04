@@ -1,2 +1,2 @@
 # ovirt-template-manager
-managing the templates on the local (remote) machines
+oVirt Template Manager is designed to edit, upload, download the template images on the client.
