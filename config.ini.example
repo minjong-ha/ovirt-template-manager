@@ -9,4 +9,5 @@ CERT_PATH = /etc/cert/ovirt-engine/ca.crt
 
 [IMAGE_TRANSFER]
 API = ovirt-engine/api/imagetransfers
+DISK_ID = ${disk_uuid_you_want}
 DOWNLOAD_PATH = ${PATH_FOR_DOWNLOAD}
