@@ -1,0 +1,13 @@
+[COMMON]
+URL = https://engine.ovirt.tmaxos.net/
+ID = ${ID_FOR_ENGINE} // usually form of "admin@internal"
+PW = ${PW_FOR_ENGINE}
+
+[CERTIFICATION]
+API = ovirt-engine/services/pki-resource
+CERT_PATH = /etc/cert/ovirt-engine/ca.crt
+
+[IMAGE_TRANSFER]
+API = ovirt-engine/api/imagetransfers
+DISK_ID = ${disk_uuid_you_want}
+DOWNLOAD_PATH = ${PATH_FOR_DOWNLOAD}
