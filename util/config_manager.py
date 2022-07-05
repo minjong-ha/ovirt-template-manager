@@ -1,6 +1,18 @@
 import configparser
 
 
+cert_params = {
+    "resource": "ca-certificate",
+    "format": "X509-PEM-CA",
+}
+
+common_headers = {
+    "Version": "4",
+    "Content-Type": "application/xml",
+    "Accept": "application/xml",
+}
+
+
 class ConfigManager:
     _COMMON_URL = None
     _COMMON_ID = None
