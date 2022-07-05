@@ -10,6 +10,10 @@ Therefore, some of the codes or configurations might be updated for other versio
 * Python 3.8
 * oVirt-Engine: CentOS 7 + oVirt 4.3
 
+## Tools
+* vscode
+* black (formatter)
+
 ## Configuration
 config.ini.example represents the configurations for ovirt-template-manager.
 Users have to edit some configurations to run and change the name to config.ini.
