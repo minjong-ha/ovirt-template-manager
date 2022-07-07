@@ -1,6 +1,7 @@
 """
 Created by "Minjong Ha" on 2022/07/05
 """
+
 import os
 import shutil
 import xml.etree.ElementTree as ET
@@ -30,7 +31,7 @@ class DownloadManager:
         return proxy_url, image_transfer_id
 
     def __issue_cert_from_engine(self):
-        url = self._conf_manager.get_common_url() + self._conf_manager.get_cert_api()
+        url = self._conf_manager.get_cert_req_url()
         cert_path = self._conf_manager.get_cert_path()
 
         response = requests.get(url, params=cert_params)
@@ -39,20 +40,18 @@ class DownloadManager:
             file.write(bytes.decode(response.content))
 
     def __issue_ticket_for_download(self):
-        url = self._conf_manager.get_common_url() + self._conf_manager.get_img_api()
+        url = self._conf_manager.get_download_req_url()
         disk_id = self._conf_manager.get_img_id()
         cert_path = self._conf_manager.get_cert_path()
         common_id = self._conf_manager.get_common_id()
         common_pw = self._conf_manager.get_common_pw()
 
-        data = (
-            """<image_transfer>
-                    <disk id="%s"/>
+        data = f"""
+                <image_transfer>
+                    <disk id="{disk_id}"/>
                     <direction>download</direction>
                 </image_transfer>
             """
-            % disk_id
-        )
 
         response = requests.post(
             url,
@@ -77,10 +76,7 @@ class DownloadManager:
         cert_path = self._conf_manager.get_cert_path()
         common_id = self._conf_manager.get_common_id()
         common_pw = self._conf_manager.get_common_pw()
-        common_url = self._conf_manager.get_common_url()
-        img_api = self._conf_manager.get_img_api()
-
-        closing_url = common_url + img_api + "/" + image_transfer_id + "/finalize"
+        closing_url = self._conf_manager.get_closing_url(image_transfer_id)
 
         data = "<action />"
         response = requests.post(
