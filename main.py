@@ -1,5 +1,5 @@
 """
-main.py is the main file to run ovirt-tmeplate-manager
+Created by "Minjong Ha" on 2022/07/05
 """
 
 from utils.config_manager import ConfigManager
