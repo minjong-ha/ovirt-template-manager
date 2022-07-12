@@ -34,3 +34,6 @@ Followings mean which entries should be editted or not.
 >* DISK_ID                  (Edit)
 >* DOWNLOAD_PATH            (Edit)
 
+
+## Usages
+```python3 main.py ${path/to/config.ini}```
