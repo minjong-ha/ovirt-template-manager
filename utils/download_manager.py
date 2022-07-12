@@ -41,10 +41,10 @@ class DownloadManager:
 
     def __issue_ticket_for_download(self):
         url = self._conf_manager.get_download_req_url()
-        disk_id = self._conf_manager.get_img_id()
         cert_path = self._conf_manager.get_cert_path()
         common_id = self._conf_manager.get_common_id()
         common_pw = self._conf_manager.get_common_pw()
+        disk_id = self._conf_manager.get_img_id()
 
         data = f"""
                 <image_transfer>

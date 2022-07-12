@@ -5,7 +5,7 @@ Created by "Minjong Ha" on 2022/07/06
 class InfoManager:
     """
     InfoManager has responsibility to list the images in the disks.
-    It can reformant the xml info of the images into the human-readable format.
+    It can reformats the xml info of the images into the human-readable format.
     """
 
     _conf_manager = None
