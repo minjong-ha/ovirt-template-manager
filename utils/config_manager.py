@@ -33,12 +33,15 @@ class ConfigManager:
     _img_id = None
     _img_download_path = None
 
+    _template_api = None
+
     _config = None
 
     def __init__(self, ini):
         self.__get_common_conf(ini)
         self.__get_cert_conf(ini)
         self.__get_imagetransfer_conf(ini)
+        self.__get_template_conf(ini)
 
     def __conf_parser(self, ini):
         self._config = configparser.ConfigParser()
@@ -68,6 +71,11 @@ class ConfigManager:
         self._img_api = config["IMAGE_TRANSFER"]["API"]
         self._img_id = config["IMAGE_TRANSFER"]["DISK_ID"]
         self._img_download_path = config["IMAGE_TRANSFER"]["DOWNLOAD_PATH"]
+
+    def __get_template_conf(self, ini):
+        config = self.__conf_parser(ini)
+
+        self._template_api = config["TEMPLATE"]["API"]
 
     # default configurations getter
     def get_common_url(self):
@@ -117,3 +125,11 @@ class ConfigManager:
         id: image trasfer id that issued by ovirt-engine
         """
         return self._common_url + self._img_api + "/" + id + "/finalize"
+
+    # info manager configurations getter
+    def get_template_url(self):
+        return self._common_url + self._template_api
+
+    def get_template_api(self):
+        """return template_api (URL path)"""
+        return self._template_api

@@ -20,4 +20,5 @@ if __name__ == "__main__":
     dl_manager = DownloadManager(conf_manager)
     info_manager = InfoManager(conf_manager)
 
-    dl_manager.download_image()
+    info_manager.list_all_templates()
+    #dl_manager.download_image()
