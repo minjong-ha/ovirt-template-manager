@@ -26,13 +26,16 @@ Followings mean which entries should be editted or not.
 >* PW: oVirt-Engine PW      (Edit)
 
 * CERTIFICATION
->* API                      (Fix)
+>* API                      (Fix / No Edit)
 >* CERT_PATH                (Editable)
 
 * IMAGE_TRANSFER
->* API                      (Fix)
+>* API                      (Fix / No Edit)
 >* DISK_ID                  (Edit)
 >* DOWNLOAD_PATH            (Edit)
+
+* TEMPLATE
+> * API						(Fix / No Edit)
 
 
 ## Usages
