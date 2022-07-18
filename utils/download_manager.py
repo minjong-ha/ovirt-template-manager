@@ -39,12 +39,16 @@ class DownloadManager:
         with open(cert_path, "w+") as file:
             file.write(bytes.decode(response.content))
 
-    def __issue_ticket_for_download(self):
+    def __issue_ticket_for_download(self, id):
         url = self._conf_manager.get_download_req_url()
         cert_path = self._conf_manager.get_cert_path()
         common_id = self._conf_manager.get_common_id()
         common_pw = self._conf_manager.get_common_pw()
-        disk_id = self._conf_manager.get_img_id()
+
+        if id is None:
+            disk_id = self._conf_manager.get_img_id()
+        else :
+            disk_id = id
 
         data = f"""
                 <image_transfer>
@@ -87,19 +91,16 @@ class DownloadManager:
             auth=(common_id, common_pw),
         )
 
-    def download_image(self):
-        """
-        download the template image following the configurations in the config.ini
-        """
-
+    def download_image_with_id(self, disk_id):
         # 1. Get certification from oVirt-engine
         self.__issue_cert_from_engine()
 
         # 2. Request a ticket to oVirt-engine
-        proxy_url, image_transfer_id = self.__issue_ticket_for_download()
+        proxy_url, image_transfer_id = self.__issue_ticket_for_download(disk_id)
 
         # 3. Download the template image
         self.__download_template_image(proxy_url)
 
         # 4. Close connection
         self.__close_download(image_transfer_id)
+
