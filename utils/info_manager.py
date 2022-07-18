@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 from .config_manager import cert_params
 from .config_manager import common_headers
 
+
 class InfoManager:
     """
     InfoManager has responsibility to list the images in the disks.
@@ -15,7 +16,7 @@ class InfoManager:
     """
 
     _conf_manager = None
-    
+
     def __init__(self, config_manager):
         self._conf_manager = config_manager
 
@@ -26,12 +27,13 @@ class InfoManager:
         common_id = self._conf_manager.get_common_id()
         common_pw = self._conf_manager.get_common_pw()
 
-        response = requests.get(url, headers=common_headers, verify=cert_path, auth=(common_id, common_pw))
+        response = requests.get(
+            url, headers=common_headers, verify=cert_path, auth=(common_id, common_pw)
+        )
         root = ET.fromstring(response.text)
 
         for disk_attachment in root.iter("disk_attachment"):
             print(disk_attachment.attrib.get("id"))
-		
 
     def list_all_templates(self):
         print("LIST ALL TEMPLATES")
@@ -40,10 +42,10 @@ class InfoManager:
         common_id = self._conf_manager.get_common_id()
         common_pw = self._conf_manager.get_common_pw()
 
-        response = requests.get(url, headers=common_headers, verify=cert_path, auth=(common_id, common_pw))
+        response = requests.get(
+            url, headers=common_headers, verify=cert_path, auth=(common_id, common_pw)
+        )
 
-        # Now, I have to reformat the xmls to human-readable form
-        # with diskattachments id 
         root = ET.fromstring(response.text)
         for template in root.iter("template"):
             print(template.find("name").text)
