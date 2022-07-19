@@ -2,10 +2,9 @@
 Created by "Minjong Ha" on 2022/07/06
 """
 
-import requests
 import xml.etree.ElementTree as ET
+import requests
 
-from .config_manager import cert_params
 from .config_manager import common_headers
 
 
@@ -52,21 +51,23 @@ class InfoManager:
             return disk.attrib.get("id")
 
     def __list_template_info(self, template):
-            template_name = template.find("name").text
-            template_desc = template.find("description").text
-            template_comment = template.find("comment").text
-            template_ver_name = template.find("version").find("version_name").text
-            template_ver_number = template.find("version").find("version_number").text
-            template_disk_id = self.__get_diskattachment(template.attrib.get("id"))
+        template_name = template.find("name").text
+        template_desc = template.find("description").text
+        template_comment = template.find("comment").text
+        template_ver_name = template.find("version").find("version_name").text
+        template_ver_number = template.find("version").find("version_number").text
+        template_disk_id = self.__get_diskattachment(template.attrib.get("id"))
 
-            print(f"Name: \t\t{template_name}")
-            print(f"Description: \t{template_desc}")
-            print(f"Comment: \t{template_comment}")
-            print(f"Version: \t{template_ver_name} - {template_ver_number}")
-            print(f"disk_id: \t{template_disk_id}")
-            print("=============================================================")
-            
+        print(f"Name: \t\t{template_name}")
+        print(f"Description: \t{template_desc}")
+        print(f"Comment: \t{template_comment}")
+        print(f"Version: \t{template_ver_name} - {template_ver_number}")
+        print(f"disk_id: \t{template_disk_id}")
+        print("=============================================================")
+
     def list_all_templates(self):
+        """print the info of all templates"""
+
         print("LIST ALL TEMPLATES")
         print(f"Number of Templates: {len(self._template_list)}")
 
@@ -75,11 +76,13 @@ class InfoManager:
             self.__list_template_info(template)
 
     def list_template_info(self, idx):
+        """print the info of selected template"""
         template = self._template_list[idx]
 
         self.__list_template_info(template)
 
     def get_disk_id(self, idx):
+        """return the disk_id of template (disk_attachment)"""
         template = self._template_list[idx]
 
         return self.__get_diskattachment(template.attrib.get("id"))
