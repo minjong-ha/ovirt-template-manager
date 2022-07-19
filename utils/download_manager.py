@@ -47,7 +47,7 @@ class DownloadManager:
 
         if id is None:
             disk_id = self._conf_manager.get_img_id()
-        else :
+        else:
             disk_id = id
 
         data = f"""
@@ -92,6 +92,9 @@ class DownloadManager:
         )
 
     def download_image_with_id(self, disk_id):
+        """
+        Download the template image from oVirt-engine using REST API
+        """
         # 1. Get certification from oVirt-engine
         self.__issue_cert_from_engine()
 
@@ -103,4 +106,3 @@ class DownloadManager:
 
         # 4. Close connection
         self.__close_download(image_transfer_id)
-

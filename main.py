@@ -8,8 +8,10 @@ from utils.config_manager import ConfigManager
 from utils.download_manager import DownloadManager
 from utils.info_manager import InfoManager
 
+
 def print_empty_line():
     print()
+
 
 if __name__ == "__main__":
     try:
@@ -27,11 +29,11 @@ if __name__ == "__main__":
     index = input("Select the template you want to download: ")
     print_empty_line()
 
-    # double check the template selected
+    # double check the selected template
     info_manager.list_template_info(int(index))
     check = input("Is this template you want? {y/n): ")
 
-    if check == 'y' or check == 'yes' or check == 'Y' or check == 'YES':
+    if check in ("y", "yes", "Y", "YES", "Yes"):
         dl_manager.download_image_with_id(info_manager.get_disk_id(int(index)))
     else:
         print("Download canceled")
