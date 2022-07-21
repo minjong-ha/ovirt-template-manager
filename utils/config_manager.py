@@ -15,6 +15,7 @@ common_headers = {
     "Accept": "application/xml",
 }
 
+
 class ConfigManager:
     """
     ConfigManager has a responsibility to load the configurations from config.ini.
@@ -26,7 +27,6 @@ class ConfigManager:
         self.__get_cert_conf(ini)
         self.__get_imagetransfer_conf(ini)
         self.__get_template_conf(ini)
-
 
     def __conf_parser(self, ini):
         self._config = configparser.ConfigParser()
@@ -56,13 +56,11 @@ class ConfigManager:
         self.img_api = config["IMAGE_TRANSFER"]["API"]
         self.img_id = config["IMAGE_TRANSFER"]["DISK_ID"]
         self.img_download_path = config["IMAGE_TRANSFER"]["DOWNLOAD_PATH"]
-        #self._closing_url = ""
 
     def __get_template_conf(self, ini):
         config = self.__conf_parser(ini)
 
         self.template_api = config["TEMPLATE"]["API"]
-        #self._template_diskattachments_url = ""
 
     @property
     def cert_req_url(self):
@@ -73,6 +71,10 @@ class ConfigManager:
     def download_req_url(self):
         """return download_req_url for issue the ticket"""
         return self.common_url + self.img_api
+
+    @property
+    def template_url(self):
+        return self.common_url + self.template_api
 
     @property
     def closing_url(self):
@@ -87,14 +89,11 @@ class ConfigManager:
         self._closing_url = self.common_url + self.img_api + "/" + id + "/finalize"
 
     @property
-    def template_url(self):
-        return self.common_url + self.template_api
-
-    @property
     def template_diskattachments_url(self):
         return self._template_diskattachments_url
 
     @template_diskattachments_url.setter
     def template_diskattachments_url(self, id):
-        self._template_diskattachments_url = self.template_url + "/" + id + "/diskattachments"
-    
+        self._template_diskattachments_url = (
+            self.template_url + "/" + id + "/diskattachments"
+        )

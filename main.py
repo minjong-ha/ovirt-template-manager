@@ -8,6 +8,7 @@ from utils.config_manager import ConfigManager
 from utils.download_manager import DownloadManager
 from utils.info_manager import InfoManager
 
+
 def print_empty_line():
     print()
 

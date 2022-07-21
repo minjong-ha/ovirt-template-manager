@@ -10,6 +10,7 @@ import shutil
 import xml.etree.ElementTree as ET
 import requests
 
+
 class DownloadManager:
     """
     DownloadManager has responsibility to manage the temaplate images.
