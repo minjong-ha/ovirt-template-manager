@@ -2,11 +2,10 @@
 Created by "Minjong Ha" on 2022/07/06
 """
 
-import xml.etree.ElementTree as ET
-import requests
-
 from .config_manager import common_headers
 
+import xml.etree.ElementTree as ET
+import requests
 
 class InfoManager:
     """
@@ -14,18 +13,15 @@ class InfoManager:
     It can reformats the xml info of the images into the human-readable format.
     """
 
-    _conf_manager = None
-    _template_list = None
-
     def __init__(self, config_manager):
         self._conf_manager = config_manager
         self.__get_templates()
 
     def __get_templates(self):
-        url = self._conf_manager.get_template_url()
-        cert_path = self._conf_manager.get_cert_path()
-        common_id = self._conf_manager.get_common_id()
-        common_pw = self._conf_manager.get_common_pw()
+        url = self._conf_manager.template_url
+        cert_path = self._conf_manager.cert_path
+        common_id = self._conf_manager.common_id
+        common_pw = self._conf_manager.common_pw
 
         response = requests.get(
             url, headers=common_headers, verify=cert_path, auth=(common_id, common_pw)
@@ -35,10 +31,12 @@ class InfoManager:
         self._template_list = list(root.iter("template"))
 
     def __get_diskattachment(self, id):
-        url = self._conf_manager.get_template_url() + "/" + id + "/diskattachments"
-        cert_path = self._conf_manager.get_cert_path()
-        common_id = self._conf_manager.get_common_id()
-        common_pw = self._conf_manager.get_common_pw()
+        #url = self._conf_manager.template_url + "/" + id + "/diskattachments"
+        self._conf_manager.template_diskattachments_url = id
+        url = self._conf_manager.template_diskattachments_url
+        cert_path = self._conf_manager.cert_path
+        common_id = self._conf_manager.common_id
+        common_pw = self._conf_manager.common_pw
 
         response = requests.get(
             url, headers=common_headers, verify=cert_path, auth=(common_id, common_pw)

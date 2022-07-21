@@ -2,14 +2,13 @@
 Created by "Minjong Ha" on 2022/07/05
 """
 
+from .config_manager import cert_params
+from .config_manager import common_headers
+
 import os
 import shutil
 import xml.etree.ElementTree as ET
 import requests
-
-from .config_manager import cert_params
-from .config_manager import common_headers
-
 
 class DownloadManager:
     """
@@ -17,8 +16,6 @@ class DownloadManager:
     It can download, edit, list the template images in the oVirt cluster.
     With the help of ConfigManager, it is easy to configure the parameters for management.
     """
-
-    _conf_manager = None
 
     def __init__(self, config_manager):
         self._conf_manager = config_manager
@@ -31,8 +28,8 @@ class DownloadManager:
         return proxy_url, image_transfer_id
 
     def __issue_cert_from_engine(self):
-        url = self._conf_manager.get_cert_req_url()
-        cert_path = self._conf_manager.get_cert_path()
+        url = self._conf_manager.cert_req_url
+        cert_path = self._conf_manager.cert_path
 
         response = requests.get(url, params=cert_params)
         os.makedirs(os.path.dirname(cert_path), exist_ok=True)
@@ -40,13 +37,13 @@ class DownloadManager:
             file.write(bytes.decode(response.content))
 
     def __issue_ticket_for_download(self, id):
-        url = self._conf_manager.get_download_req_url()
-        cert_path = self._conf_manager.get_cert_path()
-        common_id = self._conf_manager.get_common_id()
-        common_pw = self._conf_manager.get_common_pw()
+        url = self._conf_manager.download_req_url
+        cert_path = self._conf_manager.cert_path
+        common_id = self._conf_manager.common_id
+        common_pw = self._conf_manager.common_pw
 
         if id is None:
-            disk_id = self._conf_manager.get_img_id()
+            disk_id = self._conf_manager.img_id
         else:
             disk_id = id
 
@@ -69,18 +66,19 @@ class DownloadManager:
         return proxy_url, image_transfer_id
 
     def __download_template_image(self, proxy_url):
-        cert_path = self._conf_manager.get_cert_path()
-        img_download_path = self._conf_manager.get_img_download_path()
+        cert_path = self._conf_manager.cert_path
+        img_download_path = self._conf_manager.img_download_path
 
         with requests.get(proxy_url, stream=True, verify=cert_path) as r:
             with open(img_download_path, "wb") as f:
                 shutil.copyfileobj(r.raw, f)
 
     def __close_download(self, image_transfer_id):
-        cert_path = self._conf_manager.get_cert_path()
-        common_id = self._conf_manager.get_common_id()
-        common_pw = self._conf_manager.get_common_pw()
-        closing_url = self._conf_manager.get_closing_url(image_transfer_id)
+        cert_path = self._conf_manager.cert_path
+        common_id = self._conf_manager.common_id
+        common_pw = self._conf_manager.common_pw
+        self._conf_manager.closing_url = image_transfer_id
+        closing_url = self._conf_manager.closing_url
 
         data = "<action />"
         response = requests.post(
