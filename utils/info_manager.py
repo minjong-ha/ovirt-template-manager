@@ -7,7 +7,6 @@ from .config_manager import common_headers
 import xml.etree.ElementTree as ET
 import requests
 
-
 class InfoManager:
     """
     InfoManager has responsibility to list the images in the disks.
@@ -29,10 +28,11 @@ class InfoManager:
         )
 
         root = ET.fromstring(response.text)
+
         self._template_list = list(root.iter("template"))
 
-    def __get_diskattachment(self, id):
-        self._conf_manager.template_diskattachments_url = id
+    def __get_diskattachment(self, disk_id):
+        self._conf_manager.template_diskattachments_url = disk_id
         url = self._conf_manager.template_diskattachments_url
         cert_path = self._conf_manager.cert_path
         common_id = self._conf_manager.common_id

@@ -23,13 +23,14 @@ class ConfigManager:
     """
 
     def __init__(self, ini):
+        self._config = configparser.ConfigParser()
+
         self.__get_common_conf(ini)
         self.__get_cert_conf(ini)
         self.__get_imagetransfer_conf(ini)
         self.__get_template_conf(ini)
 
     def __conf_parser(self, ini):
-        self._config = configparser.ConfigParser()
         self._config.read(ini)
 
         config = configparser.ConfigParser()
@@ -74,6 +75,7 @@ class ConfigManager:
 
     @property
     def template_url(self):
+        """return template_url to get info of all templates"""
         return self.common_url + self.template_api
 
     @property
@@ -85,15 +87,16 @@ class ConfigManager:
         return self._closing_url
 
     @closing_url.setter
-    def closing_url(self, id):
-        self._closing_url = self.common_url + self.img_api + "/" + id + "/finalize"
+    def closing_url(self, image_transfer_id):
+        self._closing_url = self.common_url + self.img_api + "/" + image_transfer_id + "/finalize"
 
     @property
     def template_diskattachments_url(self):
+        """return disk_attachments url for disk_id it takes"""
         return self._template_diskattachments_url
 
     @template_diskattachments_url.setter
-    def template_diskattachments_url(self, id):
+    def template_diskattachments_url(self, disk_id):
         self._template_diskattachments_url = (
-            self.template_url + "/" + id + "/diskattachments"
+            self.template_url + "/" + disk_id + "/diskattachments"
         )
