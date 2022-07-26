@@ -17,6 +17,9 @@ class InfoManager:
         self._conf_manager = config_manager
         self.__get_templates()
 
+    def __sort_templates_by_version_number(self, parent):
+        parent[:] = sorted(parent, key=lambda child: (child.find("version").find("version_number").text))
+
     def __get_templates(self):
         url = self._conf_manager.template_url
         cert_path = self._conf_manager.cert_path
@@ -29,7 +32,36 @@ class InfoManager:
 
         root = ET.fromstring(response.text)
 
-        self._template_list = list(root.iter("template"))
+        #========================================================================
+        template_name_list = []
+        unique_template_name_list = []
+        sorted_template_list = []
+
+        # 1. extract name list
+        for template in root:
+            template_name_list.append(template.find("name").text)
+        unique_template_names = set(template_name_list)
+        for template in unique_template_names:
+            unique_template_name_list.append(template)
+        print(unique_template_name_list)
+
+        unique_template_name_list.sort()
+            
+        # 2. choose each templates having same name
+        for template_name in unique_template_name_list:
+            print(template_name)
+            template_list_by_name = []
+            for template in root.findall("template"):
+                if template.find("name").text == template_name:
+                    template_list_by_name.append(template)
+            # 3. sort each groups with version.version_number
+            self.__sort_templates_by_version_number(template_list_by_name)
+            # 4. concantenate them
+            sorted_template_list = sorted_template_list + template_list_by_name
+
+        self._template_list = sorted_template_list
+        #========================================================================
+        #self._template_list = list(root.iter("template"))
 
     def __get_diskattachment(self, disk_id):
         self._conf_manager.template_diskattachments_url = disk_id
