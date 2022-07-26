@@ -7,6 +7,7 @@ from .config_manager import common_headers
 import xml.etree.ElementTree as ET
 import requests
 
+
 class InfoManager:
     """
     InfoManager has responsibility to list the images in the disks.
@@ -18,7 +19,10 @@ class InfoManager:
         self.__get_templates()
 
     def __sort_templates_by_version_number(self, parent):
-        parent[:] = sorted(parent, key=lambda child: (child.find("version").find("version_number").text))
+        parent[:] = sorted(
+            parent,
+            key=lambda child: (child.find("version").find("version_number").text),
+        )
 
     def __get_unique_name_list(self, templates):
         template_name_list = []
@@ -41,15 +45,18 @@ class InfoManager:
         sorted_template_list = []
 
         unique_template_name_list = self.__get_unique_name_list(templates)
-            
+
         # choose the templates having same name from unique_template_name_list
         for template_name in unique_template_name_list:
             template_list_by_name = []
+
             for template in templates.findall("template"):
                 if template.find("name").text == template_name:
                     template_list_by_name.append(template)
+
             # sort each groups with version.version_number
             self.__sort_templates_by_version_number(template_list_by_name)
+
             # concantenate them
             sorted_template_list = sorted_template_list + template_list_by_name
 

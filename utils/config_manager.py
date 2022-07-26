@@ -88,7 +88,9 @@ class ConfigManager:
 
     @closing_url.setter
     def closing_url(self, image_transfer_id):
-        self._closing_url = self.common_url + self.img_api + "/" + image_transfer_id + "/finalize"
+        self._closing_url = (
+            self.common_url + self.img_api + "/" + image_transfer_id + "/finalize"
+        )
 
     @property
     def template_diskattachments_url(self):
