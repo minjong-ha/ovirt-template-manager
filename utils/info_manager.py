@@ -2,11 +2,10 @@
 Created by "Minjong Ha" on 2022/07/06
 """
 
-import xml.etree.ElementTree as ET
-import requests
-
 from .config_manager import common_headers
 
+import xml.etree.ElementTree as ET
+import requests
 
 class InfoManager:
     """
@@ -14,31 +13,68 @@ class InfoManager:
     It can reformats the xml info of the images into the human-readable format.
     """
 
-    _conf_manager = None
-    _template_list = None
-
     def __init__(self, config_manager):
         self._conf_manager = config_manager
         self.__get_templates()
 
+    def __sort_templates_by_version_number(self, parent):
+        parent[:] = sorted(parent, key=lambda child: (child.find("version").find("version_number").text))
+
+    def __get_unique_name_list(self, templates):
+        template_name_list = []
+        unique_template_name_list = []
+
+        for template in templates:
+            template_name_list.append(template.find("name").text)
+
+        unique_template_names = set(template_name_list)
+
+        for template in unique_template_names:
+            unique_template_name_list.append(template)
+
+        unique_template_name_list.sort()
+
+        return unique_template_name_list
+
+    def __get_sorted_template_list(self, templates):
+        unique_template_name_list = []
+        sorted_template_list = []
+
+        unique_template_name_list = self.__get_unique_name_list(templates)
+            
+        # choose the templates having same name from unique_template_name_list
+        for template_name in unique_template_name_list:
+            template_list_by_name = []
+            for template in templates.findall("template"):
+                if template.find("name").text == template_name:
+                    template_list_by_name.append(template)
+            # sort each groups with version.version_number
+            self.__sort_templates_by_version_number(template_list_by_name)
+            # concantenate them
+            sorted_template_list = sorted_template_list + template_list_by_name
+
+        return sorted_template_list
+
     def __get_templates(self):
-        url = self._conf_manager.get_template_url()
-        cert_path = self._conf_manager.get_cert_path()
-        common_id = self._conf_manager.get_common_id()
-        common_pw = self._conf_manager.get_common_pw()
+        url = self._conf_manager.template_url
+        cert_path = self._conf_manager.cert_path
+        common_id = self._conf_manager.common_id
+        common_pw = self._conf_manager.common_pw
 
         response = requests.get(
             url, headers=common_headers, verify=cert_path, auth=(common_id, common_pw)
         )
 
         root = ET.fromstring(response.text)
-        self._template_list = list(root.iter("template"))
 
-    def __get_diskattachment(self, id):
-        url = self._conf_manager.get_template_url() + "/" + id + "/diskattachments"
-        cert_path = self._conf_manager.get_cert_path()
-        common_id = self._conf_manager.get_common_id()
-        common_pw = self._conf_manager.get_common_pw()
+        self._template_list = self.__get_sorted_template_list(root)
+
+    def __get_diskattachment(self, disk_id):
+        self._conf_manager.template_diskattachments_url = disk_id
+        url = self._conf_manager.template_diskattachments_url
+        cert_path = self._conf_manager.cert_path
+        common_id = self._conf_manager.common_id
+        common_pw = self._conf_manager.common_pw
 
         response = requests.get(
             url, headers=common_headers, verify=cert_path, auth=(common_id, common_pw)
