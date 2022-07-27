@@ -101,10 +101,10 @@ class InfoManager:
         template_ver_number = template.find("version").find("version_number").text
         template_disk_id = self.__get_diskattachment(template.attrib.get("id"))
 
-        print(f"Name: \t\t{template_name}")
+        print(f"Name: \t\t{template_name} - {template_ver_number}")
+        print(f"Version: \t{template_ver_name}")
         print(f"Description: \t{template_desc}")
         print(f"Comment: \t{template_comment}")
-        print(f"Version: \t{template_ver_name} - {template_ver_number}")
         print(f"disk_id: \t{template_disk_id}")
         print("=============================================================")
 
