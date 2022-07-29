@@ -7,7 +7,7 @@ import os
 from os import path
 from pathlib import Path
 
-sys.path.append(path.dirname(path.dirname( path.dirname( path.abspath(__file__)))))
+sys.path.append(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))))
 
 from utils.config_manager import cert_params
 from utils.config_manager import common_headers
@@ -94,7 +94,9 @@ class DownloadManager:
         with open(img_download_path, "wb") as f:
             response = requests.get(proxy_url, stream=True, verify=cert_path)
             total_length = response.headers.get("content-length")
-            print(f"Downloading {total_length} bytes ({self.__convert_size(total_length)})")
+            print(
+                f"Downloading {total_length} bytes ({self.__convert_size(total_length)})"
+            )
 
             if total_length is None:
                 f.write(response.content)
@@ -105,7 +107,9 @@ class DownloadManager:
                     dl += len(data)
                     f.write(data)
                     done = int(100 * dl / total_length)
-                    sys.stdout.write(f"\r[{'=' * done}{' ' * (100 - done)}].....{(dl / total_length * 100):.2f} %")
+                    sys.stdout.write(
+                        f"\r[{'#' * done}{' ' * (100 - done)}].....{(dl / total_length * 100):.2f} %"
+                    )
                     sys.stdout.flush()
             print()
 
@@ -125,14 +129,14 @@ class DownloadManager:
             auth=(common_id, common_pw),
         )
 
-    def issue_cert_from_engine(self):
-        self.__issue_cert_from_engine()
-
     def __remove_old_cert(self):
         cert_path = self._conf_manager.cert_path
         file_path = Path(cert_path)
         if file_path.is_file():
             os.remove(cert_path)
+
+    def issue_cert_from_engine(self):
+        self.__issue_cert_from_engine()
 
     def download_image_with_id(self, disk_id):
         """
