@@ -34,7 +34,8 @@ class DownloadManager:
         self.__issue_cert_from_engine()
 
     def __certificate_engine(self):
-        response = requests.get('http://engine.ovirt.tmaxos.net/ovirt-engine/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA', params=cert_params)
+        url = self._conf_manager.cert_init_url + self._conf_manager.cert_api + "?resource=ca-certificate&format=X509-PEM-CA"
+        response = requests.get(url, params=cert_params)
         with open('/etc/ssl/certs/ca-certificates.crt', 'wb') as f:
             f.write(response.content)
 

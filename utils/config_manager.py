@@ -48,6 +48,7 @@ class ConfigManager:
     def __get_cert_conf(self, ini):
         config = self.__conf_parser(ini)
 
+        self.cert_init_url = config["CERTIFICATION"]["INIT_URL"]
         self.cert_api = config["CERTIFICATION"]["API"]
         self.cert_path = config["CERTIFICATION"]["CERT_PATH"]
 
