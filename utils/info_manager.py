@@ -1,12 +1,14 @@
 """
 Created by "Minjong Ha" on 2022/07/06
 """
+import sys
+from os import path
+sys.path.append(path.dirname(path.dirname(path.dirname( path.abspath(__file__)))))
 
-from .config_manager import common_headers
+from utils.config_manager import common_headers
 
 import xml.etree.ElementTree as ET
 import requests
-
 
 class InfoManager:
     """

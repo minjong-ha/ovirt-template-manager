@@ -1,9 +1,12 @@
 """
 Created by "Minjong Ha" on 2022/07/05
 """
+import sys
+from os import path
+sys.path.append(path.dirname(path.dirname( path.dirname( path.abspath(__file__)))))
 
-from .config_manager import cert_params
-from .config_manager import common_headers
+from utils.config_manager import cert_params
+from utils.config_manager import common_headers
 
 import os
 import shutil
@@ -89,6 +92,9 @@ class DownloadManager:
             data=data,
             auth=(common_id, common_pw),
         )
+
+    def issue_cert_from_engine(self):
+        self.__issue_cert_from_engine()
 
     def download_image_with_id(self, disk_id):
         """

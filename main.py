@@ -3,11 +3,12 @@ Created by "Minjong Ha" on 2022/07/05
 """
 
 import sys
+from os import path
+sys.path.append(path.dirname( path.dirname( path.abspath(__file__) ) ))
 
 from utils.config_manager import ConfigManager
 from utils.download_manager import DownloadManager
 from utils.info_manager import InfoManager
-
 
 def print_empty_line():
     print()
