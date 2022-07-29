@@ -3,6 +3,9 @@ Created by "Minjong Ha" on 2022/07/05
 """
 
 import sys
+import os
+
+from pathlib import Path
 from os import path
 sys.path.append(path.dirname( path.dirname( path.abspath(__file__) ) ))
 
@@ -12,7 +15,6 @@ from utils.info_manager import InfoManager
 
 def print_empty_line():
     print()
-
 
 if __name__ == "__main__":
     try:
@@ -27,15 +29,19 @@ if __name__ == "__main__":
     info_manager = InfoManager(conf_manager)
 
     info_manager.list_all_templates()
+    print_empty_line()
+    print_empty_line()
+
     index = input("Select the template you want to download: ")
     print_empty_line()
 
-    # double check the selected template
+    # Double check the selected template
     info_manager.list_template_info(int(index))
     check = input("Is this template you want? {y/n): ")
+    disk_id = info_manager.get_disk_id(int(index))
 
     if check in ("y", "yes", "Y", "YES", "Yes"):
-        dl_manager.download_image_with_id(info_manager.get_disk_id(int(index)))
+        dl_manager.download_image_with_id(disk_id)
     else:
         print("Download canceled")
         sys.exit()
