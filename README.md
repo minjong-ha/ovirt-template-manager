@@ -39,4 +39,15 @@ Followings mean which entries should be editted or not.
 
 
 ## Usages
-```python3 main.py ${path/to/config.ini}```
+
+```python
+python3 main.py ${path/to/config.ini}
+```
+
+## Tests
+You can test the ovirt-template-manager is working through the tests/
+
+```python
+python3 test_ovirt_engine.py
+```
+

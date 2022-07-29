@@ -1,18 +1,30 @@
+"""
+Created by "Minjong Ha" on 2022/07/29
+"""
+
+from unittest import TestCase, main
+from pathlib import Path
+
 import sys
 import os
 from os import path
-sys.path.append(path.dirname( path.dirname( path.abspath(__file__) ) ))
+
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from utils import config_manager
 from utils import download_manager
 from utils import info_manager
 
-from unittest import TestCase, main
-from pathlib import Path
 
 class UtilTestCase(TestCase):
-    
+    """
+    UtilTestCase presents the test cases for modules in utils directory
+    : config_manager, download_manager, and info_manager
+    """
+
     def test_is_config_valid(self):
+        """Check config.ini validation"""
+
         ini = "../config.ini"
         _conf_manager = config_manager.ConfigManager(ini)
 
@@ -39,6 +51,8 @@ class UtilTestCase(TestCase):
         print(f"template_api:       {_conf_manager.template_api!r}\n")
 
     def test_is_connected(self):
+        """Check the host is connected to ovirt-engine"""
+
         ini = "../config.ini"
         _conf_manager = config_manager.ConfigManager(ini)
 
@@ -53,6 +67,8 @@ class UtilTestCase(TestCase):
 
         assert path.is_file()
 
+        print(f"ovirt-engine({_conf_manager.common_url} is connected: {path.is_file()})")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
