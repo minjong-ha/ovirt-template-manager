@@ -28,6 +28,9 @@ if __name__ == "__main__":
         sys.exit()
 
     conf_manager = ConfigManager(ini)
+
+    os.makedirs(path.dirname(conf_manager.cert_path))
+
     dl_manager = DownloadManager(conf_manager)
     info_manager = InfoManager(conf_manager)
 
