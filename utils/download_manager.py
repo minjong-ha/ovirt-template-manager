@@ -29,8 +29,14 @@ class DownloadManager:
         self._conf_manager = config_manager
 
         # Issue the ticket when the manager init
+        self.__certificate_engine()
         self.__remove_old_cert()
         self.__issue_cert_from_engine()
+
+    def __certificate_engine(self):
+        response = requests.get('http://engine.ovirt.tmaxos.net/ovirt-engine/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA', params=cert_params)
+        with open('/etc/ssl/certs/ca-certificates.crt', 'wb') as f:
+            f.write(response.content)
 
     def __parse_ticket(self, response):
         root = ET.fromstring(response.text)
