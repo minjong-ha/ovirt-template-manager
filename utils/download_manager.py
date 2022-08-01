@@ -136,12 +136,6 @@ class DownloadManager:
             auth=(common_id, common_pw),
         )
 
-    def __remove_old_cert(self):
-        cert_path = self._conf_manager.cert_path
-        file_path = Path(cert_path)
-        if file_path.is_file():
-            os.remove(cert_path)
-
     def issue_cert_from_engine(self):
         self.__certificate_engine()
 
