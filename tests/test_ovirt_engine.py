@@ -22,9 +22,10 @@ class UtilTestCase(TestCase):
     : config_manager, download_manager, and info_manager
     """
 
+    ini = "../config.ini"
+
     def setUp(self):
-        ini = "../config.ini"
-        self._conf_manager = config_manager.ConfigManager(ini)
+        self._conf_manager = config_manager.ConfigManager(self.ini)
 
         cert_path = self._conf_manager.cert_path
         path = Path(cert_path)
@@ -42,8 +43,7 @@ class UtilTestCase(TestCase):
     def test_is_config_valid(self):
         """Check config.ini validation"""
 
-        ini = "../config.ini"
-        _conf_manager = config_manager.ConfigManager(ini)
+        _conf_manager = config_manager.ConfigManager(self.ini)
 
         self.assertIsNotNone(self._conf_manager.common_url)
         self.assertIsNotNone(self._conf_manager.common_id)
@@ -79,6 +79,10 @@ class UtilTestCase(TestCase):
         self.assertTrue(path.is_file())
 
         print(f"ovirt-engine({self._conf_manager.common_url} is connected: {path.is_file()})")
+        if path.is_file == False:
+            print(f"Connection Fail. Check your '/etc/hosts' file")
+            print(f"Example: 192.168.0.100  engine.ovirt.example.com")
+            print(f"There should be FQDN for ovirt-Engine")
 
 
 if __name__ == "__main__":

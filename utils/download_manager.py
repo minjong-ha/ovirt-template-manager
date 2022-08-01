@@ -17,6 +17,17 @@ import math
 import xml.etree.ElementTree as ET
 import requests
 
+def convert_size(byte_size):
+    byte_size = int(byte_size)
+    if byte_size == 0:
+        return "0B"
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(byte_size, 1024)))
+    p = math.pow(1024, i)
+    s = round(byte_size / p, 2)
+
+    return f"{s} {size_name[i]}"
+
 
 class DownloadManager:
     """
@@ -30,13 +41,16 @@ class DownloadManager:
 
         # Issue the ticket when the manager init
         self.__certificate_engine()
-        self.__remove_old_cert()
-        self.__issue_cert_from_engine()
 
     def __certificate_engine(self):
         url = self._conf_manager.cert_init_url + self._conf_manager.cert_api + "?resource=ca-certificate&format=X509-PEM-CA"
+
+        cert_path = path.dirname(self._conf_manager.cert_path)
+        if not os.path.exists(cert_path):
+            os.makedirs(cert_path)
+
         response = requests.get(url, params=cert_params)
-        with open('/etc/ssl/certs/ca-certificates.crt', 'wb') as f:
+        with open(self._conf_manager.cert_path, 'wb') as f:
             f.write(response.content)
 
     def __parse_ticket(self, response):
@@ -45,15 +59,6 @@ class DownloadManager:
         image_transfer_id = root.attrib.get("id")
 
         return proxy_url, image_transfer_id
-
-    def __issue_cert_from_engine(self):
-        url = self._conf_manager.cert_req_url
-        cert_path = self._conf_manager.cert_path
-
-        response = requests.get(url, params=cert_params)
-        os.makedirs(os.path.dirname(cert_path), exist_ok=True)
-        with open(cert_path, "w+") as file:
-            file.write(bytes.decode(response.content))
 
     def __issue_ticket_for_download(self, id):
         url = self._conf_manager.download_req_url
@@ -84,16 +89,6 @@ class DownloadManager:
         proxy_url, image_transfer_id = self.__parse_ticket(response)
         return proxy_url, image_transfer_id
 
-    def __convert_size(self, byte_size):
-        byte_size = int(byte_size)
-        if byte_size == 0:
-            return "0B"
-        size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-        i = int(math.floor(math.log(byte_size, 1024)))
-        p = math.pow(1024, i)
-        s = round(byte_size / p, 2)
-        return f"{s} {size_name[i]}"
-
     def __download_template_image(self, proxy_url):
         cert_path = self._conf_manager.cert_path
         img_download_path = self._conf_manager.img_download_path
@@ -102,7 +97,7 @@ class DownloadManager:
             response = requests.get(proxy_url, stream=True, verify=cert_path)
             total_length = response.headers.get("content-length")
             print(
-                f"Downloading {total_length} bytes ({self.__convert_size(total_length)})"
+                f"Downloading {total_length} bytes ({convert_size(total_length)})"
             )
 
             if total_length is None:
@@ -143,7 +138,7 @@ class DownloadManager:
             os.remove(cert_path)
 
     def issue_cert_from_engine(self):
-        self.__issue_cert_from_engine()
+        self.__certificate_engine()
 
     def download_image_with_id(self, disk_id):
         """
