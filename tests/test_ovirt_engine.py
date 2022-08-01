@@ -67,23 +67,6 @@ class UtilTestCase(TestCase):
         self.assertIsNotNone(self._conf_manager.template_api)
         print(f"template_api:       {self._conf_manager.template_api!r}\n")
 
-    def test_is_connected(self):
-        """Check the host is connected to ovirt-engine"""
-
-        cert_path = self._conf_manager.cert_path
-        path = Path(cert_path)
-
-        _download_manager = download_manager.DownloadManager(self._conf_manager)
-        _download_manager.issue_cert_from_engine()
-
-        self.assertTrue(path.is_file())
-
-        print(f"ovirt-engine({self._conf_manager.common_url} is connected: {path.is_file()})")
-        if path.is_file == False:
-            print(f"Connection Fail. Check your '/etc/hosts' file")
-            print(f"Example: 192.168.0.100  engine.ovirt.example.com")
-            print(f"There should be FQDN for ovirt-Engine")
-
 
 if __name__ == "__main__":
     main()

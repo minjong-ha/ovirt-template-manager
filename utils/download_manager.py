@@ -17,7 +17,8 @@ import math
 import xml.etree.ElementTree as ET
 import requests
 
-def convert_size(byte_size):
+
+def human_readable_filesize(byte_size: str) -> str:
     byte_size = int(byte_size)
     if byte_size == 0:
         return "0B"
@@ -39,18 +40,22 @@ class DownloadManager:
     def __init__(self, config_manager):
         self._conf_manager = config_manager
 
-        # Issue the ticket when the manager init
+        # get certification from ovirt-engine
         self.__certificate_engine()
 
     def __certificate_engine(self):
-        url = self._conf_manager.cert_init_url + self._conf_manager.cert_api + "?resource=ca-certificate&format=X509-PEM-CA"
+        url = (
+            self._conf_manager.cert_init_url
+            + self._conf_manager.cert_api
+            + "?resource=ca-certificate&format=X509-PEM-CA"
+        )
 
         cert_path = path.dirname(self._conf_manager.cert_path)
         if not os.path.exists(cert_path):
             os.makedirs(cert_path)
 
         response = requests.get(url, params=cert_params)
-        with open(self._conf_manager.cert_path, 'wb') as f:
+        with open(self._conf_manager.cert_path, "wb") as f:
             f.write(response.content)
 
     def __parse_ticket(self, response):
@@ -97,7 +102,7 @@ class DownloadManager:
             response = requests.get(proxy_url, stream=True, verify=cert_path)
             total_length = response.headers.get("content-length")
             print(
-                f"Downloading {total_length} bytes ({convert_size(total_length)})"
+                f"Downloading {total_length} bytes ({human_readable_filesize(total_length)})"
             )
 
             if total_length is None:
