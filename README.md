@@ -21,18 +21,19 @@ Users have to edit some configurations to run and change the name to config.ini.
 Followings mean which entries should be editted or not.
 
 * COMMON
->* URL: oVirt-Engine FQDN   (Edit)
->* ID: oVirt-Engine ID      (Edit)
->* PW: oVirt-Engine PW      (Edit)
+> * URL: oVirt-Engine FQDN   (Edit)
+> * ID: oVirt-Engine ID      (Edit)
+> * PW: oVirt-Engine PW      (Edit)
 
 * CERTIFICATION
->* API                      (Fix / No Edit)
->* CERT_PATH                (Editable)
+> * INIT_URL				 (Edit) # Identical with COMMON-URL, but http not https
+> * API                      (Fix / No Edit)
+> * CERT_PATH                (Editable)
 
 * IMAGE_TRANSFER
->* API                      (Fix / No Edit)
->* DISK_ID                  (Edit)
->* DOWNLOAD_PATH            (Edit)
+> * API                      (Fix / No Edit)
+> * DISK_ID                  (Edit)
+> * DOWNLOAD_PATH            (Edit)
 
 * TEMPLATE
 > * API						(Fix / No Edit)

@@ -1,9 +1,10 @@
 [COMMON]
-URL = https://engine.ovirt.tmaxos.net/
+URL = https://engine.ovirt.net/
 ID = ${ID_FOR_ENGINE} // usually form of "admin@internal"
-PW = ${PW_FOR_ENGINE}
+PW = ${PW_FOR_ENGINE} // raw password
 
 [CERTIFICATION]
+INIT_URL = http://engine.ovirt.net/
 API = ovirt-engine/services/pki-resource
 CERT_PATH = /etc/cert/ovirt-engine/ca.crt
 
