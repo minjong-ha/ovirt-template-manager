@@ -13,6 +13,7 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from utils.config_manager import ConfigManager
 from utils.download_manager import DownloadManager
 from utils.info_manager import InfoManager
+from utils.notify_manager import NotifyManager
 
 
 def print_empty_line():
@@ -20,6 +21,7 @@ def print_empty_line():
 
 
 if __name__ == "__main__":
+
     try:
         ini = sys.argv[1]
     except:
