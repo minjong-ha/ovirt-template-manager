@@ -11,6 +11,9 @@ Therefore, some of the codes or configurations should be updated for the other v
 * Python 3.9
 * oVirt-Engine: CentOS 7 + oVirt 4.3
 
+## Requirements
+* notify2 (apt install python3-notify2)
+
 ## Tools
 * vscode
 * black, pylint (formatter)

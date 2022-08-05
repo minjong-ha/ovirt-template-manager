@@ -22,6 +22,9 @@ def print_empty_line():
 
 if __name__ == "__main__":
 
+    n = NotifyManager()
+    n.send_notification()
+
     try:
         ini = sys.argv[1]
     except:
